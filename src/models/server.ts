@@ -5,6 +5,7 @@ import swaggerUi from 'swagger-ui-express';
 
 import routerApi from '../routes';
 import { dbConnection } from '../database/config';
+require('express-async-errors');
 
 class Server {
 

@@ -18,6 +18,7 @@ const swagger_jsdoc_1 = __importDefault(require("swagger-jsdoc"));
 const swagger_ui_express_1 = __importDefault(require("swagger-ui-express"));
 const routes_1 = __importDefault(require("../routes"));
 const config_1 = require("../database/config");
+require('express-async-errors');
 class Server {
     constructor() {
         this.options = {
