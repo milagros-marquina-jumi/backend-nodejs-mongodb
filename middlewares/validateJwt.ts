@@ -5,13 +5,11 @@ import { NextFunction, Request, Response } from 'express';
 import { dbConnection } from '../database/config';
 import { ObjectId } from 'mongodb';
 
-
 export const validateJWT = async( req: Request, res: Response, next: NextFunction) => {
     const memoryCache = await caching('memory', {
         max: 100,
-        ttl: 10 * 1000 ,
+        ttl: 10 * 1000,
       });
-
     await memoryCache.set('host', req.headers.host, 5000);
 
     const token = req.header('x-token');

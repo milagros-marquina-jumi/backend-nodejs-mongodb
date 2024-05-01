@@ -10,7 +10,7 @@ export const roleValidation = async (rol: 'ADMIN_ROLE' | 'USER_ROLE') => {
 }
 
 export const existingEmail = async (email: string) => {
-    // Verificar si el correo existe en la base de datos
+    // Verificar si el correo existe en la base de datos 
     const collection = dbConnection.getCollection('users');
     const emailDb = await collection.findOne({ email });
     if (emailDb) {
