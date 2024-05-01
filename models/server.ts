@@ -3,7 +3,7 @@ import cors from 'cors';
 import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
 
-//import routerApi from '../routes';
+import routerApi from '../routes';
 import { dbConnection } from '../database/config';
 
 class Server {
@@ -54,7 +54,7 @@ class Server {
 
     routes() {
         this.app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(this.swaggerSpec));
-        //routerApi(this.app);
+        routerApi(this.app);
     }
 
     listen() {
