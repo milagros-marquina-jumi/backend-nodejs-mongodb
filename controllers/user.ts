@@ -1,7 +1,12 @@
 import { Request, Response } from 'express';
-import { ObjectId } from 'mongodb';
+import { Collection, ObjectId } from 'mongodb';
 import bcryptjs from 'bcryptjs';
+// import User from '../models/user';
 import { dbConnection } from '../database/config';
+import { UserSearchParams } from '../types';
+
+
+
 
 class UserController {
 
@@ -30,16 +35,21 @@ class UserController {
     async getUsers(req: Request, res: Response): Promise<void> {
         const { name, email, page = 1, limit = 10, sortField = 'name', sortOrder = 'asc' } = req.query;
 
+        const filter: UserSearchParams = {};
+
+        if (name) filter['name'] = { $regex: name.toString(), $options: 'i' };
+        if (email) filter['email'] = { $regex: email.toString(), $options: 'i' };
+
         // Construir las opciones de paginación y ordenamiento
         const options = {
             limit: parseInt(limit as string),
             skip: (parseInt(page as string) - 1) * parseInt(limit as string),
             sort: { [`${sortField}`]: sortOrder === 'asc' ? 1 : -1 } as any
         }
-
         // Obtener los usuarios que coincidan con el filtro
         const collection = dbConnection.getCollection('users');
-        const users = await collection;
+        const users = await collection.find(filter, options).toArray();
+
 
         res.json({ users });
     };
@@ -52,6 +62,7 @@ class UserController {
         // Encriptar la contraseña
         const salt = bcryptjs.genSaltSync();
         newUser.password = bcryptjs.hashSync(password, salt);
+      
 
         // Guardar en BD
         const collection = dbConnection.getCollection('users');
@@ -61,6 +72,7 @@ class UserController {
             newUser
         });
     };
+
 
     async updateUser(req: Request, res: Response): Promise<void> {
 
@@ -77,6 +89,7 @@ class UserController {
 
         res.status(200).json({
             msg: "el usuario fue actualizado",
+
         });
     };
 
@@ -89,6 +102,10 @@ class UserController {
             msg: "el usuario fue eliminado",
         });
     };
+
+
+
 }
+
 
 export default UserController;

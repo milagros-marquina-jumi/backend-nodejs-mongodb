@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import bcryptjs from 'bcryptjs';
 
+import { jwtGenerator } from '../helpers/jwtGenerator';
 import { dbConnection } from '../database/config';
 
 class AuthController {
@@ -12,8 +13,8 @@ class AuthController {
         try {
             const collection = dbConnection.getCollection('users');
             const user = await collection.findOne({ email });
-            const { _id, ...userData } = user; 
-      
+            const { _id, ...userData } = user;
+
             if (!user) {
                 res.status(400).json({
                     msg: 'Usuario / Contraseña no son correctos - correo'
@@ -35,10 +36,13 @@ class AuthController {
                     msg: 'Usuario / Contraseña no son correctos - contraseña'
                 });
                 return;
-            }
+            };
+
+            const token = await jwtGenerator( _id);
 
             res.status(200).json({
                 user,
+                token
             });
         } catch (error) {
             res.status(500).json({
