@@ -1,4 +1,5 @@
 import { MongoClient } from 'mongodb';
+export const status = { status: 'fail' }
 
 class MongoDBConnection {
 
@@ -11,8 +12,8 @@ class MongoDBConnection {
         try {
             this.client = new MongoClient(mongoUrl)
             this.client && await this.client.connect();
+            status.status = 'success'
             console.log('Connected to MongoDB');
-
         } catch (error) {
             console.error('Error connecting to MongoDB:', error);
         }
