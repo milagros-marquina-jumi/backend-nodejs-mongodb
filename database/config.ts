@@ -1,18 +1,31 @@
-import mongoose from "mongoose";
+import { MongoClient } from 'mongodb';
 
-const dbConnection = async () => {
+class MongoDBConnection {
 
+    private client?: MongoClient;
+    private db: any;
 
-    try {
-    //    await mongoose.connect(process.env.MOGODB_CNN);
-       console.log('se conecto la base de datos');
-     }
-    catch (error) {
-        console.error(error);
-        throw new Error('error al iniciar la base de datos ')
+    constructor() { };
+
+    async connect(mongoUrl: string) {
+        try {
+
+            this.client = new MongoClient(mongoUrl)
+            this.client && await this.client.connect();
+            console.log('Connected to MongoDB');
+
+        } catch (error) {
+            console.error('Error connecting to MongoDB:', error);
+        }
+    }
+
+    getCollection(collectionName: string) {
+
+        if (this.client) {
+            this.db = this.client.db('dashboard');
+            return this.db.collection(collectionName);
+        }
     }
 }
 
-module.exports= {
-    dbConnection
-}
+export const dbConnection = new MongoDBConnection()
