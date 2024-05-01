@@ -1,12 +1,8 @@
 import { Request, Response } from 'express';
-import { Collection, ObjectId } from 'mongodb';
+import { ObjectId } from 'mongodb';
 import bcryptjs from 'bcryptjs';
-// import User from '../models/user';
 import { dbConnection } from '../database/config';
 import { UserSearchParams } from '../types';
-
-
-
 
 class UserController {
 
@@ -50,19 +46,16 @@ class UserController {
         const collection = dbConnection.getCollection('users');
         const users = await collection.find(filter, options).toArray();
 
-
         res.json({ users });
     };
 
     async createUser(req: Request, res: Response): Promise<void> {
-
         const { name, email, password, rol } = req.body;
 
         const newUser = { name, email, password, rol , state:true}
         // Encriptar la contraseña
         const salt = bcryptjs.genSaltSync();
         newUser.password = bcryptjs.hashSync(password, salt);
-      
 
         // Guardar en BD
         const collection = dbConnection.getCollection('users');
@@ -72,7 +65,6 @@ class UserController {
             newUser
         });
     };
-
 
     async updateUser(req: Request, res: Response): Promise<void> {
 
@@ -102,10 +94,6 @@ class UserController {
             msg: "el usuario fue eliminado",
         });
     };
-
-
-
 }
-
 
 export default UserController;

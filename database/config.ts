@@ -9,7 +9,6 @@ class MongoDBConnection {
 
     async connect(mongoUrl: string) {
         try {
-
             this.client = new MongoClient(mongoUrl)
             this.client && await this.client.connect();
             console.log('Connected to MongoDB');
