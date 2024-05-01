@@ -22,7 +22,6 @@ class AuthController {
                 return;
             }
 
-            // Si el usuario está inactivo
             if (!user.state) {
                 res.status(400).json({
                     msg: 'Usuario / Contraseña no son correctos - estado: false'

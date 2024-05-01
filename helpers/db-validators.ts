@@ -10,7 +10,6 @@ export const roleValidation = async (rol: 'ADMIN_ROLE' | 'USER_ROLE') => {
 }
 
 export const existingEmail = async (email: string) => {
-    // Verificar si el correo existe en la base de datos 
     const collection = dbConnection.getCollection('users');
     const emailDb = await collection.findOne({ email });
     if (emailDb) {
@@ -19,7 +18,6 @@ export const existingEmail = async (email: string) => {
 }
 
 export const searchUserById = async (id: string) => {
-    // Verificar si el usuario exite 
     const collection = dbConnection.getCollection('users');
     const userDb = await collection.findOne({ _id: new ObjectId(id) });
     if (!userDb) {

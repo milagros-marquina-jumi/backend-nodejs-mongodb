@@ -25,7 +25,6 @@ export const validateJWT = async( req: Request, res: Response, next: NextFunctio
 
             const { uid }:any = jwt.verify( token, process.env.SECRETORPRIVATEKEY );
 
-            // leer el usuario que corresponde al uid
             const collection = dbConnection.getCollection('users');
             const user = await collection.findOne({ _id: new ObjectId(uid) });
 
@@ -35,7 +34,6 @@ export const validateJWT = async( req: Request, res: Response, next: NextFunctio
                 })
             }
 
-            // Verificar si el uid tiene estado true
             if ( !user.state ) {
                 return res.status(401).json({
                     msg: 'Token no válido - usuario con estado: false'
