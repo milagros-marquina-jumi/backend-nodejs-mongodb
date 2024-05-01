@@ -9,8 +9,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.dbConnection = void 0;
+exports.dbConnection = exports.status = void 0;
 const mongodb_1 = require("mongodb");
+exports.status = { status: 'fail' };
 class MongoDBConnection {
     constructor() { }
     ;
@@ -19,6 +20,7 @@ class MongoDBConnection {
             try {
                 this.client = new mongodb_1.MongoClient(mongoUrl);
                 this.client && (yield this.client.connect());
+                exports.status.status = 'success';
                 console.log('Connected to MongoDB');
             }
             catch (error) {
